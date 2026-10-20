@@ -1,0 +1,81 @@
+import { AnimatePresence, motion, Variants } from 'motion/react';
+import { NavbarProps } from './Navbar.types'
+import { dataHeader } from '../Header/Header.data';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+
+const Navbar = (props: NavbarProps ) => {
+
+  const { openMobileMenu } = props;
+  const [isScrolling, setIsScrolling] = useState(false)
+
+  const handleScroll = () => {
+    if ( window.scrollY > 150 ) {
+      setIsScrolling(true)
+    } else {
+      setIsScrolling(false)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+
+  }, [])
+
+  return (
+    <AnimatePresence>
+
+      {isScrolling ? (
+        <motion.nav key={1}
+          variants={animationNavbar}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          className='ml-auto mr-auto md:fixed z-9999 right-0 left-0 px-6 py-3 text-white bg-gray-400/40 top-10 rounded-3xl backdrop-blur w-fit'
+        >
+          <div className='items-center hidden gap-5 md:flex' >
+              {dataHeader.map(({id, name, link}) => (
+                <Link key={id} href={link} className='hover:text-green-900 hover:border-b hover:border-green-400' >{name}</Link>
+              ))}
+              <Link href="/login" className='px-3 py-2 text-white rounded-lg bg-green-900 hover:bg-black' >Login</Link>
+          </div>
+            
+        </motion.nav>
+      ): (
+        <div className={`${openMobileMenu ? 'absolute z-1 left-0 top-20 bg-white right-0 w-full px-4 py-4' : 'hidden'} gap-5 md:flex`} >
+            {dataHeader.map(({id, name, link}) => (
+              <Link key={id} href={link} className='block hover:text-green-900 hover:border-b' >
+                {name}
+              </Link>
+            ))}
+        </div>
+      )}
+    </AnimatePresence>
+  )
+}
+
+export default Navbar
+
+const animationNavbar: Variants = {
+  initial: {
+    y: -20,
+    opacity:0
+  },
+  animate: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      stiffness: 100,
+      damping: 20,
+      type: "spring"
+    }
+  },
+  exit: {
+    y: -20,
+    opacity: 0
+  }
+}
