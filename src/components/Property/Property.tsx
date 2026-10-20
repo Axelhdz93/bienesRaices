@@ -50,7 +50,9 @@ const Property = (props: PropertyProps ) => {
                 </div>
                 <div className='my-3'>{house.description}</div>
             </div>
+
             <Form />
+            
         </div>
     </main>
   )

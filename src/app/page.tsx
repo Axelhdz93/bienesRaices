@@ -24,14 +24,18 @@ export default function Home() {
   return (
     <>
       <Suspense fallback={<div>Cargando...</div>}>
-      <Header />
+        <Header />
       </Suspense>
+      
       <main>
         <Banner />
+
         <Suspense fallback={<div>Cargando...</div>}>
           <Properties />
         </Suspense>  
+
         <div className="max-w-6xl mx-auto" >
+          
           <Services />
 
           <Suspense fallback={<div>Cargando...</div>}>
@@ -40,6 +44,7 @@ export default function Home() {
           
           <About />
         </div>
+        
         <JoinCommunity />
         <Footer />
       </main>

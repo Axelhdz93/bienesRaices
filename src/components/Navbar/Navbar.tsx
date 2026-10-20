@@ -11,12 +11,15 @@ const Navbar = (props: NavbarProps ) => {
   const [isScrolling, setIsScrolling] = useState(false)
 
   const handleScroll = () => {
-    if ( window.scrollY > 150 ) {
+  // ✅ Comprueba primero si 'window' está disponible en el entorno actual
+  if (typeof window !== "undefined") {
+    if (window.scrollY > 150) {
       setIsScrolling(true)
     } else {
       setIsScrolling(false)
     }
   }
+}
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)

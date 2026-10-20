@@ -1,35 +1,25 @@
-'use client'
+// /src/app/properties/(property)/[page]/page.tsx
+// Server Component (Sin 'use client' aquí arriba)
 
-import Error404 from "@/components/Error404/Error404"
-import Footer from "@/components/Footer/Footer"
-import Header from "@/components/Header/Header"
-import { dataProperties } from "@/components/Properties/Properties.data"
-import Property from "@/components/Property/Property"
-import Transition from "@/components/Transition/Transition"
-import { useParams } from "next/navigation"
+import { connection } from 'next/server'; // <--- Importamos la utilidad moderna de Next.js
+import PropertyPageClient from "@/components/PropertyPageClient/PropertyPageClient";
 
+// 1. Quitamos 'dynamic' y dejamos únicamente la regla de navegación instantánea
+export const instant = false; 
 
-
-const Page = () => {
-  const router = useParams()
-  const propertyId = router.page
-  const filteredPage = dataProperties.find(
-    property => property.id === Number(propertyId)
-  )
-
-  return (
-    <Transition>
-      <Header />
-
-      {filteredPage ? (
-        <Property house={filteredPage} />
-      ) : (
-        <Error404 />
-      )}
-
-      <Footer />
-    </Transition>
-  )
+interface PageProps {
+  params: {
+    page: string;
+  };
 }
 
-export default Page
+export default async function Page({ params }: PageProps) {
+  // 2. Le indicamos a cacheComponents que esta ruta se ejecuta por solicitud del usuario
+  await connection(); 
+  
+  const resolvedParams = await params;
+  
+  return (
+    <PropertyPageClient pageId={resolvedParams.page} />
+  );
+}

@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-<Suspense fallback={<div>Cargando...</div>}>
   <ViewTransitions>
     <html
       lang="es"
@@ -21,12 +20,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="min-h-full flex flex-col px-4">
 
-        
+        <Suspense fallback={<div>Cargando...</div>}>
         {children}
-        
+        </Suspense> 
+
       </body>
     </html>
   </ViewTransitions>  
-</Suspense>  
+ 
   );
 }
